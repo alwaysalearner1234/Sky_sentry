@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WeatherTrust — 3D Climate Verification</title>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css?v=9999" />
+  <link rel="stylesheet" href="polish.css" />
+  
+  <!-- Three.js Import Map -->
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+      "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+    }
+  }
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/satellite.js@4.1.3/dist/satellite.min.js"></script>
+</head>
+<body class="state-safe">
+  
+  <header class="header">
+    <div class="header-title">🌍 WEATHER TRUST — CLIMATE DATA GRID</div>
+    <div class="header-right">
+      <div class="header-chip" id="chip-global">GLOBAL TRUST: —</div>
+      <div class="header-clock">
+        <span class="clock-label">UTC</span>
+        <span id="utc-clock" class="clock-value">00:00:00</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 8px; margin-right: 15px; background: rgba(255,255,255,0.05); padding: 4px 10px; border-radius: 4px; border: 1px solid #333;">
+          <span style="font-size: 10px; color: #9ca3af; font-family: 'JetBrains Mono';">TRUST GATE</span>
+          <input type="range" id="trust-slider" min="0" max="100" value="0" style="width: 80px; accent-color: #22c55e;">
+          <span id="trust-val" style="font-size: 10px; color: #22c55e; font-family: 'JetBrains Mono'; width: 25px;">0%</span>
+      </div>
+      <button id="carbon-btn" class="btn" style="background: rgba(34, 197, 94, 0.2); border-color: #22c55e; color: #22c55e; margin-right: 8px;">
+        🌱 VERIFY CARBON
+      </button>
+      <button id="tamper-btn" class="btn" style="background: rgba(239, 68, 68, 0.2); border-color: #ef4444; color: #ef4444;">
+        ⚠️ TAMPER
+      </button>
+    </div>
+  </header>
+
+  <main class="dashboard">
+    
+    <!-- COLUMN 1: METRICS -->
+    <section class="panel panel-constellation">
+      <h2 class="panel-title">SYSTEM METRICS</h2>
+      <div class="sector-stats">
+        <span id="stat-sats">TILES: 0</span>
+        <span id="stat-objs">FLAGGED: 0</span>
+        <span id="stat-breach">MEAN TRUST: 0</span>
+      </div>
+      
+      <div class="kv-table" style="margin-top: 20px;">
+        <div class="kv-row"><span class="kv-key">AI Model</span><span class="kv-val" id="t-model">v1.0.0</span></div>
+        <div class="kv-row"><span class="kv-key">Data Source</span><span class="kv-val">GOES-16 ABI</span></div>
+        <div class="kv-row"><span class="kv-key">Reference</span><span class="kv-val">ERA5-Land</span></div>
+      </div>
+      <div class="obj-hint" style="margin-top:20px;">DRAG TO ROTATE. SCROLL TO ZOOM. CLICK A DOT TO INSPECT.</div>
+    </section>
+
+    <!-- COLUMN 2: 3D EARTH -->
+    <section class="panel panel-telemetry" style="padding: 0; overflow: hidden;">
+      <div id="earth-canvas-container" style="width: 100%; height: 100%; min-height: 500px;"></div>
+    </section>
+
+    <!-- COLUMN 3: EXPLAINABILITY & AUDIT -->
+    <div class="right-col">
+      <section class="panel panel-tracker">
+        <h2 class="panel-title">AI EXPLAINABILITY</h2>
+        <div id="explain-hint" class="obj-hint">CLICK A RED OR GREEN DOT ON THE GLOBE</div>
+        
+        <div id="explain-card" class="lock-card hidden" style="display: none;">
+          <div class="lock-head" id="lock-head">📍 TILE DATA</div>
+          <div class="kv-table">
+            <div class="kv-row"><span class="kv-key">Observation ID</span><span class="kv-val" id="l-id">—</span></div>
+            <div class="kv-row"><span class="kv-key">Trust Score</span><span class="kv-val" id="l-trust">—</span></div>
+            <div class="kv-row"><span class="kv-key">Primary Reason</span><span class="kv-val" id="l-reason">—</span></div>
+            <div class="kv-row"><span class="kv-key">Uncertainty</span><span class="kv-val" id="l-unc">—</span></div>
+          </div>
+          <button class="btn" style="width: 100%; margin-top: 10px;" id="btn-verify">VERIFY MERKLE PROOF</button>
+        </div>
+      </section>
+
+      <section class="panel panel-log">
+        <h2 class="panel-title">ON-CHAIN AUDIT TRAIL</h2>
+        <div id="audit-chip" class="audit-chip">TAMPER-PROOF LEDGER: VERIFYING…</div>
+        <ul id="event-log" class="event-log"></ul>
+      </section>
+    </div>
+  </main>
+
+  <!-- Our Logic -->
+  <script src="app-trust.js"></script>
+  <script type="module" src="earth.js"></script>
+</body>
+</html>

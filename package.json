@@ -1,0 +1,7 @@
+{
+  "name": "sky-sentry-frontend",
+  "version": "1.0.0",
+  "private": true,
+  "type": "commonjs",
+  "description": "Vanilla JS tactical dashboard — the actual submission UI"
+}
