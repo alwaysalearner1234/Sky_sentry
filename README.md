@@ -1,56 +1,37 @@
-# SKY SENTRY — Orbital Debris Defense Grid
+# 🌍 WeatherTrust: The Verifiable Trust Layer for Climate Data
 
-Real-time monitoring dashboard for the SKY SENTRY hackathon demo. Plain HTML5, CSS3, and vanilla ES6+ JavaScript — no frameworks, no build step.
+**IEEE ClimateChain Global Hackathon 2026 Submission**
 
-## Requirements
+> *"Don't just share climate data. Prove how far to trust it."*
 
-- A FastAPI backend running on `http://localhost:8000`
-- A modern browser (Chrome, Firefox, Edge, Safari)
+## 📌 The Problem
+Climate decisions—from carbon markets to early warning systems—depend on satellite data. However, these readings can be corrupted by sensor drift, cloud contamination, and cyberattacks. Currently, users have no way to verify if the data they are using is authentic, and centralized databases can be silently altered.
 
-## Run
+## 🚀 The Solution
+**WeatherTrust** is an AI-powered, blockchain-anchored system that determines exactly which satellite observations are reliable. 
+1. **AI Reliability Engine:** Evaluates satellite data and assigns a Trust Score (0-1) with SHAP-based explanations for anomalies.
+2. **ZKP & Blockchain Ledger:** Uses Zero-Knowledge Proofs and a custom Solidity Smart Contract (`TrustRegistry.sol`) with Merkle Proofs to anchor these trust scores on-chain.
+3. **3D WebGL Dashboard:** A cinematic, 12K-quality Three.js digital twin of Earth where users can visualize climate anomalies, filter bad data, and test cryptographic tamper-proofing in real-time.
 
-Serve the `frontend/` folder with any static server, or just open `index.html` directly:
+## ✨ Key Features (What to try in the Demo)
+*   **3D Earth & Real Satellites:** Track real orbital paths (GOES-16, NOAA-20) rendered via SGP4 physics.
+*   **AI Explainability:** Click any red anomaly dot to see exactly *why* the AI flagged it (e.g., "Cloud edge").
+*   **Trust Gate Slider:** Drag the slider to instantly filter out low-trust data on the globe.
+*   **Carbon Credit Verification:** Click "Verify Carbon" to simulate a carbon market rejecting credits due to bad data.
+*   **Tamper-Proof Ledger:** Click "TAMPER" to simulate a cyberattack. Watch the Merkle hashes mismatch and the cryptographic proof fail instantly.
+*   **God's Eye View:** A cinematic, automated camera sweep of the orbital environment.
 
-```bash
-# option 1 — python
-cd frontend
-python3 -m http.server 5500
-# open http://localhost:5500
+## 🛠️ Technology Stack
+*   **Frontend:** Vanilla JS, Three.js (WebGL), CSS3, HTML5
+*   **AI Backend (Mocked in Demo):** FastAPI, Python, LightGBM (simulated in `app-trust.js`)
+*   **Cryptography:** Circom (Groth16 ZK-SNARKs), Merkle Trees
+*   **Blockchain:** Solidity, OpenZeppelin, Hardhat
 
-# option 2 — open the file directly
-open frontend/index.html
-```
+## 💻 How to Run Locally
 
-The page polls the backend every 1000ms regardless of origin, so no CORS proxy is required as long as the FastAPI app allows the request.
+The frontend is fully self-contained. The mock AI data generator is built into the JavaScript, so **no backend or API keys are required** to run the demo.
 
-## Endpoints consumed
-
-| Method | Path          | When                         |
-| ------ | ------------- | ---------------------------- |
-| GET    | `/api/track`  | Every 1000ms                 |
-| GET    | `/api/evade`  | Only while `status === "breach"` |
-
-## UI
-
-- **Header** — title bar with a live UTC clock.
-- **Status panel** — animated radar sweep plus a color-coded badge:
-  - `SAFE` — green pulse
-  - `WARNING` — amber pulse
-  - `BREACH` — red flash at 2 Hz with a full alert banner and the signed evasion token (click the token to copy it)
-- **Telemetry panel** — debris count, closest debris id/distance/velocity, safety-box radius, and a proximity gauge.
-- **Event log** — rolling, timestamped log of status transitions, fetch errors, and evasion dispatches.
-
-## Error handling
-
-- Unreachable backend → striped `OFFLINE — RETRYING...` banner and a `LINK LOST` footer indicator; polling continues.
-- Every fetch and `res.json()` is wrapped in `try/catch`, so malformed payloads never crash the app.
-- Non-2xx responses and unknown status values are treated as errors / `safe` respectively.
-
-## Files
-
-```
-frontend/
-├── index.html   markup + panel structure
-├── styles.css   theme, animations, responsive layout
-└── app.js       polling, rendering, logging, error handling
-```
+1. **Clone the repo:**
+   ```bash
+   git clone https://github.com/alwaysalearner1234/Sky_sentry.git
+   cd Sky_sentry/frontend
